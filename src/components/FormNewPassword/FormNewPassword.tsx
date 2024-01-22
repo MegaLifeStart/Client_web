@@ -11,7 +11,6 @@ import { ToPage } from "../UI/ToPage/ToPage";
 import { MyButton } from "../UI/myButton/MyButton";
 import { IUserState } from "../../models/state/FormAuth";
 import { useFetching } from "../../customHooks/useFetching";
-import { Service } from "../../API/ServiceAPI/Service";
 import { useNavigate } from "react-router-dom";
 import { LOGIN_ROUTE } from "../../routes/consts";
 import { setUser } from "../../redux/slices/userSlice";
@@ -76,6 +75,8 @@ export const FormNewPassword = () => {
           setIsPasswordChange(true);
         })
         .catch((data) => {
+          console.log(data.response.data.message);
+          console.log(form.error);
           form.error = data.response.data.message;
         });
     }
@@ -137,7 +138,8 @@ export const FormNewPassword = () => {
             />
           </InputWithBtn>
           {(form.password.valid === false ||
-            form.repeat_password.valid === false) && (
+            form.repeat_password.valid === false ||
+            form.error !== "") && (
             <ContainerInfo textError={form.error}>
               <ToPage toPage="!#">Обратиться в техподдержку</ToPage>
             </ContainerInfo>
